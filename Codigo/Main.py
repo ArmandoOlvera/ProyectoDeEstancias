@@ -56,11 +56,16 @@ def obtenerImagen(hsv,original):
 	print MiArray
 	image = np.full((100, 600, 3), fill_val) 
 	cv2.imshow('Calibrador', image)
-	verde_bajos = np.array([49,50,50])
-	verde_altos = np.array([107, 255, 255])
+	verde_bajos = np.array([25,55,0])
+	verde_altos = np.array([118, 255, 255])
+	cafe_bajo = np.array([9,50,50])
+	cafe_alto = np.array([27,158,255])
 	mascara_verde = cv2.inRange(hsv, verde_bajos, verde_altos)
-	cv2.imshow('Finale', mascara_verde) 
-	filtrado(mascara_verde,original)
+	mascara_cafe = cv2.inRange(hsv, cafe_bajo, cafe_alto)
+	mask = cv2.add(mascara_verde, mascara_verde)
+	mask = cv2.add(mask, mascara_cafe)
+	cv2.imshow('Finale', mask) 
+	filtrado(mask,original)
 
 def calibrar(hsv):
 	while True: 
@@ -92,8 +97,8 @@ if __name__=='__main__':
 	cv2.imshow('Original', resized_image)
 	##procesado(resized_image)
 	###solo tener una de las siguientes funciones des-comentada
-	calibrar(hsv)
-	##obtenerImagen(hsv,resized_image)
+	##calibrar(hsv)
+	obtenerImagen(hsv,resized_image)
 	cv2.destroyAllWindows() 
 
 #Estos son los valores aproximados para detectar el verde
